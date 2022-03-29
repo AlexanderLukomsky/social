@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, createRef, useRef } from "react"
+import React, { ChangeEvent, createRef } from "react"
 import { ProfilePageType } from "../../../state/state"
 import { Button } from "../Button/Button"
 import { PostItem } from "./Post/PostItem"
@@ -6,20 +6,25 @@ import s from './Posts.module.scss'
 
 type PostsPropsType = {
     profilePage: ProfilePageType
-    addPost: () => void
 }
 export const Posts = (props: PostsPropsType) => {
     const addNewPost = () => {
-        const value = newPostElement.current as HTMLTextAreaElement
-        props.addPost()
-        console.log(props.profilePage.posts);
+        props.profilePage.addPost()
+        props.profilePage.onChange('')
     }
-
+    const onPostChangeHandler = () => {
+        const value = newPostElement.current as HTMLTextAreaElement
+        props.profilePage.onChange(value.value)
+    }
     const newPostElement = createRef<HTMLTextAreaElement>()
     return (
         <div className={s.posts}>
             <div>
-                <textarea onChange={(e: ChangeEvent<HTMLTextAreaElement>) => { props.profilePage.onChange(e.currentTarget.value) }} ref={newPostElement} name="" id="" value={props.profilePage.newPostText}></textarea>
+                <textarea
+                    onChange={onPostChangeHandler}
+                    ref={newPostElement}
+                    value={props.profilePage.newPostText}
+                />
                 <Button title='add post' callback={addNewPost} />
             </div>
             <ul>

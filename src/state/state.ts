@@ -1,5 +1,4 @@
 import { v1 } from 'uuid';
-import { rerenderThree } from './renderThree';
 export type PostsType = { id: string, message: string, likesCount: number }
 export type DialogsType = { id: string, name: string, img: string }
 export type MessagesType = { id: string, message: string }
@@ -32,14 +31,13 @@ export const state: StateType = {
             { id: v1(), message: 'message-5', likesCount: 17 },
         ],
         newPostText: '',
-        onChange: (value) => {
-            state.profilePage.newPostText = value
-            rerenderThree(state)
+        onChange(value) {
+            this.newPostText = value
+            rerenderThree()
         },
-        addPost: () => {
-            state.profilePage.posts = [{ id: v1(), message: state.profilePage.newPostText, likesCount: 1 }, ...state.profilePage.posts]
-            state.profilePage.newPostText = ''
-            rerenderThree(state)
+        addPost() {
+            this.posts = [{ id: v1(), message: state.profilePage.newPostText, likesCount: 1 }, ...state.profilePage.posts]
+            rerenderThree()
         }
     },
     dialogsPage: {
@@ -61,4 +59,8 @@ export const state: StateType = {
         { id: v1(), name: 'Roma' },
         { id: v1(), name: 'Jora' },
     ]
+}
+let rerenderThree = () => { }
+export const subscribe = (observer: () => void) => {
+    rerenderThree = observer
 }

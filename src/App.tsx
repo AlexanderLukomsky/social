@@ -14,7 +14,6 @@ type AppPropsType = {
   profilePage: ProfilePageType
   dialogs: DialogsType[]
   messages: MessagesType[]
-  addPost: () => void
 }
 function App({ profilePage, dialogs, messages, ...props }: AppPropsType) {
 
@@ -27,7 +26,7 @@ function App({ profilePage, dialogs, messages, ...props }: AppPropsType) {
         </nav>
         <div className='body'>
           <Routes>
-            <Route path='/profile' element={<Profile profilePage={profilePage} addPost={props.addPost} />} />
+            <Route path='/profile' element={<Profile profilePage={profilePage} />} />
             <Route path='/dialogs' element={<Dialogs dialogs={dialogs} messages={messages} />} />
             <Route path='/news' element={<News />} />
             <Route path='/music' element={<Music />} />
