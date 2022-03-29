@@ -1,3 +1,4 @@
+import React from "react"
 import { DialogsType, MessagesType } from "../../state/state"
 import { DialogItem } from "./DialogItem/DialogItem"
 import { DialogMessage } from "./DialogMessage/DialogMessage"
@@ -6,7 +7,11 @@ type DialogsPropsType = {
     messages: MessagesType[]
 }
 export const Dialogs = (props: DialogsPropsType) => {
-
+    const newMessageItem = React.createRef<HTMLTextAreaElement>()
+    const addNewMessage = () => {
+        const messageItem = newMessageItem.current as HTMLTextAreaElement
+        console.log(messageItem.value);
+    }
     return (
         <div className='dialogs'>
             <div className='dialogs__columns'>
@@ -20,6 +25,10 @@ export const Dialogs = (props: DialogsPropsType) => {
                         <DialogMessage title={el.message} id={el.id} />
                     </li>)}
                 </ul>
+            </div>
+            <div>
+                <textarea ref={newMessageItem} name="" id="" ></textarea>
+                <button>add message</button>
             </div>
         </div>
     )

@@ -1,5 +1,4 @@
 import './App.scss';
-import { MouseEvent } from 'react';
 import { Profile } from './components/Profile/Profile';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import { Header } from './components/Header/Header';
@@ -9,14 +8,15 @@ import { Dialogs } from './components/Dialogs/Dialogs';
 import { News } from './components/News/News';
 import { Music } from './components/Music/Music';
 import { Settings } from './components/Settings/Settings';
-import { DialogsType, MessagesType, PostsType } from './state/state';
+import { DialogsType, MessagesType, PostsType, ProfilePageType } from './state/state';
 
 type AppPropsType = {
-  posts: PostsType[]
+  profilePage: ProfilePageType
   dialogs: DialogsType[]
   messages: MessagesType[]
+  addPost: () => void
 }
-function App({ posts, dialogs, messages, ...props }: AppPropsType) {
+function App({ profilePage, dialogs, messages, ...props }: AppPropsType) {
 
   return (
     <div className="App">
@@ -27,7 +27,7 @@ function App({ posts, dialogs, messages, ...props }: AppPropsType) {
         </nav>
         <div className='body'>
           <Routes>
-            <Route path='/profile' element={<Profile posts={posts} />} />
+            <Route path='/profile' element={<Profile profilePage={profilePage} addPost={props.addPost} />} />
             <Route path='/dialogs' element={<Dialogs dialogs={dialogs} messages={messages} />} />
             <Route path='/news' element={<News />} />
             <Route path='/music' element={<Music />} />

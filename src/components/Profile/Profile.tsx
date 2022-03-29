@@ -1,14 +1,15 @@
-import { PostsType } from '../../state/state'
+import { PostsType, ProfilePageType } from '../../state/state'
 import { Posts } from './Posts/Posts'
 import { ProfileInfo } from './ProfileInfo/ProfileInfo'
 type ProfilePropsType = {
-    posts: PostsType[]
+    profilePage: ProfilePageType
+    addPost: () => void
 }
 export const Profile = (props: ProfilePropsType) => {
     return (
         <div className='profile'>
             <ProfileInfo />
-            <Posts posts={props.posts} />
+            <Posts addPost={props.addPost} profilePage={props.profilePage} />
         </div>
     )
 }

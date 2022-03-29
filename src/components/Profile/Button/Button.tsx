@@ -2,8 +2,9 @@ type ButtonType = {
     callback: () => void
     title: string
 }
-export const Button = (props: ButtonType) => {
+export const Button = ({ callback, title, ...props }: ButtonType) => {
+    console.log('button render');
     return (
-        <button>{props.title}</button>
+        <button onClick={callback}>{title}</button>
     )
 }

@@ -1,10 +1,14 @@
 import { v1 } from 'uuid';
+import { rerenderThree } from './renderThree';
 export type PostsType = { id: string, message: string, likesCount: number }
 export type DialogsType = { id: string, name: string, img: string }
 export type MessagesType = { id: string, message: string }
 type SidebarType = { id: string, name: string }
-type ProfilePageType = {
+export type ProfilePageType = {
     posts: PostsType[]
+    newPostText: string
+    onChange: (value: string) => void
+    addPost: () => void
 }
 type DialogsPageType = {
     dialogs: DialogsType[]
@@ -26,7 +30,17 @@ export const state: StateType = {
             { id: v1(), message: 'message-3', likesCount: 11 },
             { id: v1(), message: 'message-4', likesCount: 14 },
             { id: v1(), message: 'message-5', likesCount: 17 },
-        ]
+        ],
+        newPostText: '',
+        onChange: (value) => {
+            state.profilePage.newPostText = value
+            rerenderThree(state)
+        },
+        addPost: () => {
+            state.profilePage.posts = [{ id: v1(), message: state.profilePage.newPostText, likesCount: 1 }, ...state.profilePage.posts]
+            state.profilePage.newPostText = ''
+            rerenderThree(state)
+        }
     },
     dialogsPage: {
         dialogs: [
