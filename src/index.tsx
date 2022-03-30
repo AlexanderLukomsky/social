@@ -2,17 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { store } from './state/state';
+import { reduxStore, StateType } from './state/redux/redux-store';
 
-const rerenderThree = () => {
+
+
+const rerenderThree = (state: StateType) => {
     ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App state={store.getState()} dispatch={store.dispatch.bind(store)} />
+                <App state={state} dispatch={reduxStore.dispatch} />
             </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')
     );
 }
-rerenderThree();
-store.subscribe(rerenderThree)
+rerenderThree(reduxStore.getState());
+reduxStore.subscribe(() => {
+    const state = reduxStore.getState()
+    rerenderThree(state)
+})

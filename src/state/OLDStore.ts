@@ -1,26 +1,27 @@
 import { v1 } from 'uuid';
-type AddPostACType = ReturnType<typeof addPostAC>
-type ChangePostTextACType = ReturnType<typeof changePostTextAC>
-export type ActionType = AddPostACType | ChangePostTextACType
-export type PostsType = { id: string, message: string, likesCount: number }
-export type DialogsType = { id: string, name: string, img: string }
-export type MessagesType = { id: string, message: string }
+import { DialogsActionType, dialogsReducer } from './redux/dialogs-reducer';
+import { ProfileActionType, profileReducer } from './redux/profile-reducer';
+type ActionType = ProfileActionType | DialogsActionType
+type PostsType = { id: string, message: string, likesCount: number }
+type DialogsType = { id: string, name: string, img: string }
+type MessagesType = { id: string, message: string }
 type SidebarType = { id: string, name: string }
-export type ProfilePageType = {
+type ProfilePageType = {
     posts: PostsType[]
     newPostText: string
 }
-export type DialogsPageType = {
+type DialogsPageType = {
     dialogs: DialogsType[]
     messages: MessagesType[]
+    newMessage: string
 }
 
-export type StateType = {
+type StateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogsPageType
     sidebar: SidebarType[]
 }
-export type StoreType = {
+type StoreType = {
     _state: StateType
     getState: () => StateType
     _callSubscriber: () => void
@@ -29,7 +30,7 @@ export type StoreType = {
     onChangePostText: (value: string) => void
     dispatch: (action: any) => void
 }
-export const store: StoreType = {
+const store: StoreType = {
     _callSubscriber() { },
     _state: {
         profilePage: {
@@ -54,7 +55,8 @@ export const store: StoreType = {
                 { id: v1(), message: 'Message 2' },
                 { id: v1(), message: 'Message 3' },
                 { id: v1(), message: 'Message 4' },
-            ]
+            ],
+            newMessage: ''
         },
         sidebar: [
             { id: v1(), name: 'Alex' },
@@ -77,29 +79,25 @@ export const store: StoreType = {
         store._callSubscriber()
     },
     dispatch(action: ActionType) {
+        const a = 'ADD-MESSAGE' as const
         switch (action.type) {
             case 'ADD-POST':
-                this._state.profilePage.posts = [{ id: v1(), message: this._state.profilePage.newPostText, likesCount: 1 }, ... this._state.profilePage.posts]
+                this._state.profilePage = profileReducer(this._state.profilePage, action)
                 store._callSubscriber()
                 return
             case 'CHANGE-POST-TEXT':
-                this._state.profilePage.newPostText = action.payload.value
+                this._state.profilePage = profileReducer(this._state.profilePage, action)
                 store._callSubscriber()
                 return
-            default: return
+            case 'ADD-MESSAGE':
+                this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+                this._callSubscriber()
+                return
+            case 'CHANGE-NEW-MESSAGE-TEXT':
+                this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+                this._callSubscriber()
+                return
+            default: return store._callSubscriber()
         }
     }
-}
-
-export const addPostAC = () => {
-    return {
-        type: 'ADD-POST'
-    } as const
-}
-
-export const changePostTextAC = (value: string) => {
-    return {
-        type: 'CHANGE-POST-TEXT',
-        payload: { value }
-    } as const
 }
