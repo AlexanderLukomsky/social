@@ -6,15 +6,17 @@ import s from './Posts.module.scss'
 
 type PostsPropsType = {
     profilePage: ProfilePageType
+    addPost: () => void
+    onChangePostText: (value: string) => void
 }
 export const Posts = (props: PostsPropsType) => {
     const addNewPost = () => {
-        props.profilePage.addPost()
-        props.profilePage.onChange('')
+        props.addPost()
+        props.onChangePostText('')
     }
     const onPostChangeHandler = () => {
         const value = newPostElement.current as HTMLTextAreaElement
-        props.profilePage.onChange(value.value)
+        props.onChangePostText(value.value)
     }
     const newPostElement = createRef<HTMLTextAreaElement>()
     return (
