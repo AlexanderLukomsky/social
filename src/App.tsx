@@ -8,12 +8,11 @@ import { Dialogs } from './components/Dialogs/Dialogs';
 import { News } from './components/News/News';
 import { Music } from './components/Music/Music';
 import { Settings } from './components/Settings/Settings';
-import { StateType } from './state/state';
+import { ActionType, StateType } from './state/state';
 
 type AppPropsType = {
   state: StateType
-  addPost: () => void
-  onChangePostText: (value: string) => void
+  dispatch: (action: ActionType) => void
 }
 function App({ state, ...props }: AppPropsType) {
 
@@ -26,7 +25,7 @@ function App({ state, ...props }: AppPropsType) {
         </nav>
         <div className='body'>
           <Routes>
-            <Route path='/profile' element={<Profile profilePage={state.profilePage} addPost={props.addPost} onChangePostText={props.onChangePostText} />} />
+            <Route path='/profile' element={<Profile profilePage={state.profilePage} dispatch={props.dispatch} />} />
             <Route path='/dialogs' element={<Dialogs dialogsPage={state.dialogsPage} />} />
             <Route path='/news' element={<News />} />
             <Route path='/music' element={<Music />} />

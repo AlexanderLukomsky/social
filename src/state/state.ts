@@ -1,4 +1,7 @@
 import { v1 } from 'uuid';
+type AddPostACType = ReturnType<typeof addPostAC>
+type ChangePostTextACType = ReturnType<typeof changePostTextAC>
+export type ActionType = AddPostACType | ChangePostTextACType
 export type PostsType = { id: string, message: string, likesCount: number }
 export type DialogsType = { id: string, name: string, img: string }
 export type MessagesType = { id: string, message: string }
@@ -24,8 +27,10 @@ export type StoreType = {
     subscribe: (observer: () => void) => void
     addPost: () => void
     onChangePostText: (value: string) => void
+    dispatch: (action: any) => void
 }
 export const store: StoreType = {
+    _callSubscriber() { },
     _state: {
         profilePage: {
             posts: [
@@ -60,8 +65,6 @@ export const store: StoreType = {
     getState() {
         return this._state
     },
-    _callSubscriber() { }
-    ,
     subscribe(observer: () => void) {
         this._callSubscriber = observer
     },
@@ -73,5 +76,30 @@ export const store: StoreType = {
         this._state.profilePage.newPostText = value
         store._callSubscriber()
     },
+    dispatch(action: ActionType) {
+        switch (action.type) {
+            case 'ADD-POST':
+                this._state.profilePage.posts = [{ id: v1(), message: this._state.profilePage.newPostText, likesCount: 1 }, ... this._state.profilePage.posts]
+                store._callSubscriber()
+                return
+            case 'CHANGE-POST-TEXT':
+                this._state.profilePage.newPostText = action.payload.value
+                store._callSubscriber()
+                return
+            default: return
+        }
+    }
+}
 
+export const addPostAC = () => {
+    return {
+        type: 'ADD-POST'
+    } as const
+}
+
+export const changePostTextAC = (value: string) => {
+    return {
+        type: 'CHANGE-POST-TEXT',
+        payload: { value }
+    } as const
 }
