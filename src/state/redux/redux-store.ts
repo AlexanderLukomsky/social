@@ -2,13 +2,20 @@ import { sidebarReducer } from './sidebar-reducer';
 import { combineReducers, createStore } from "redux"
 import { ProfileActionType, profileReducer } from './profile-reducer';
 import { DialogsActionType, dialogsReducer } from './dialogs-reducer';
-export type StoreType = typeof reduxStore
-const reducers = combineReducers({
+export type StoreType = {
+    // state: StateType
+    getState: () => StateType
+    subscribe: (observer: () => void) => void
+    dispatch: (action: ActionType) => void
+    //children: React.ReactNode
+}
+const reducers = combineReducers<StateType>({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     sidebar: sidebarReducer
 })
-export const reduxStore = createStore(reducers)
+
+export const reduxStore: StoreType = createStore(reducers)
 //*
 type PostsType = { id: string, message: string, likesCount: number }
 type DialogsType = { id: string, name: string, img: string }
@@ -29,3 +36,5 @@ export type StateType = {
     sidebar: SidebarType[]
 }
 export type ActionType = ProfileActionType | DialogsActionType
+
+
