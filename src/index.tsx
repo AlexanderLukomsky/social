@@ -1,28 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { StoreContext } from './components/StoreContext';
-import { reduxStore, StateType } from './state/redux/redux-store';
+import { StateType } from './components/types/StateType';
+import { store } from './redux/redux-store';
 
 
 
-const rerenderThree = (state: StateType) => {
-    ReactDOM.render(
-        <React.StrictMode>
-            <BrowserRouter>
-                <StoreContext.Provider value={reduxStore}>
-                    <App />
-                </StoreContext.Provider>
-            </BrowserRouter>
-        </React.StrictMode>,
-        document.getElementById('root')
-    );
-}
-rerenderThree(reduxStore.getState());
-reduxStore.subscribe(() => {
-    const state = reduxStore.getState()
-    rerenderThree(state)
-})
+ReactDOM.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 
-//*! Props for App   =   state={state} dispatch={reduxStore.dispatch}
+// const rerenderThree = () => {
+// }
+// rerenderThree();
+// store.subscribe(() => {
+//     const state = store.getState()
+//     rerenderThree(state)
+// })

@@ -1,11 +1,5 @@
 import { v1 } from "uuid";
-export type DialogsType = { id: string, name: string, img: string }
-export type MessagesType = { id: string, message: string }
-export type DialogsPageType = {
-    dialogs: DialogsType[]
-    messages: MessagesType[]
-    newMessage: string
-}
+import { DialogsPageType } from "../components/types/StateType";
 type AddMessageACType = ReturnType<typeof addMessageAC>
 type ChangeNewMessageTextACType = ReturnType<typeof changeNewMessageTextAC>
 export type DialogsActionType = AddMessageACType | ChangeNewMessageTextACType
@@ -27,7 +21,7 @@ const dialogsPage: DialogsPageType = {
 export const dialogsReducer = (state: DialogsPageType = dialogsPage, action: DialogsActionType) => {
     switch (action.type) {
         case 'ADD-MESSAGE':
-            return { ...state, messages: [{ id: v1(), message: state.newMessage }, ...state.messages] }
+            return { ...state, messages: [{ id: v1(), message: state.newMessage }, ...state.messages], newMessage: '' }
         case 'CHANGE-NEW-MESSAGE-TEXT':
             return { ...state, newMessage: action.payload.message }
         default: return state

@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
-import { DialogsActionType, dialogsReducer } from './redux/dialogs-reducer';
-import { ProfileActionType, profileReducer } from './redux/profile-reducer';
+import { DialogsActionType, dialogsReducer } from '../redux/dialogs-reducer';
+import { ProfileActionType, profileReducer } from '../redux/profile-reducer';
 type ActionType = ProfileActionType | DialogsActionType
 type PostsType = { id: string, message: string, likesCount: number }
 type DialogsType = { id: string, name: string, img: string }

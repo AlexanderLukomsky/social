@@ -1,33 +1,34 @@
+import React from "react"
 import { ChangeEvent } from "react"
-import { ProfilePageType } from "../../../state/redux/profile-reducer"
+import { ProfilePageType } from "../../types/StateType"
 import { Button } from "../Button/Button"
 import { PostItem } from "./Post/PostItem"
 import s from './Posts.module.scss'
 
 type PostsPropsType = {
-    state: ProfilePageType
+    profilePage: ProfilePageType
     changeNewPostTextValue: (value: string) => void
     addNewPost: () => void
 }
-export const UserPosts = (props: PostsPropsType) => {
+export const UserPosts = ({ profilePage, addNewPost, changeNewPostTextValue, ...props }: PostsPropsType) => {
     const onClickHandler = () => {
-        props.addNewPost()
+        addNewPost()
     }
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const newValue = e.currentTarget.value
-        props.changeNewPostTextValue(newValue)
+        changeNewPostTextValue(newValue)
     }
     return (
         <div className={s.posts}>
             <div>
                 <textarea
                     onChange={onChangeHandler}
-                    value={props.state.newPostText}
+                    value={profilePage.newPostText}
                 />
                 <Button title='add post' callback={onClickHandler} />
             </div>
             <ul>
-                {props.state.posts.map(el => <li key={el.id} id={el.id}>
+                {profilePage.posts.map(el => <li key={el.id} id={el.id}>
                     <PostItem message={el.message} />
                 </li>)}
             </ul>

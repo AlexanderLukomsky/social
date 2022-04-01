@@ -1,9 +1,5 @@
 import { v1 } from 'uuid';
-export type PostsType = { id: string, message: string, likesCount: number }
-export type ProfilePageType = {
-    posts: PostsType[]
-    newPostText: string
-}
+import { ProfilePageType } from '../components/types/StateType';
 type AddPostACType = ReturnType<typeof addPostAC>
 type ChangePostTextACType = ReturnType<typeof changePostTextAC>
 export type ProfileActionType = AddPostACType | ChangePostTextACType
@@ -21,7 +17,7 @@ const profilePage: ProfilePageType = {
 export const profileReducer = (state: ProfilePageType = profilePage, action: ProfileActionType) => {
     switch (action.type) {
         case 'ADD-POST':
-            return { ...state, posts: [{ id: v1(), message: state.newPostText, likesCount: 1 }, ...state.posts] }
+            return { ...state, posts: [{ id: v1(), message: state.newPostText, likesCount: 1 }, ...state.posts], newPostText: '' }
         case 'CHANGE-POST-TEXT':
             return { ...state, newPostText: action.payload.value }
         default: return state
