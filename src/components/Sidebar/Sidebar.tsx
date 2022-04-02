@@ -13,6 +13,9 @@ export const Sidebar = (props: NavbarType) => {
             <NavLink to='/dialogs'>
                 <SidebarItem title='Сообщения' />
             </NavLink>
+            <NavLink to='/users'>
+                <SidebarItem title='Пользователи' />
+            </NavLink>
             <NavLink to='/news'>
                 <SidebarItem title='Новости' />
             </NavLink>
