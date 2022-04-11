@@ -1,18 +1,16 @@
 import { connect } from "react-redux";
-import { AppStateType } from "../../redux/redux-store";
-import { followAC, setUsersAC, unfollowAC, UsersPageActionType } from "../../redux/user-reducer";
-import { UserType } from "../types/StateType";
+import { ActionType, AppStateType } from "../../redux/redux-store";
+import { followAC, setUsersAc, unfollowAC } from "../../redux/user-reducer";
+import { UsersForUserPageType } from "../types/StateType";
 import { Users } from "./Users";
 const MapStateToProps = (state: AppStateType) => {
-    return {
-        usersPage: state.usersPage
-    }
+    return { users: state.usersPage.users }
 }
-const MapDispatchToProps = (dispatch: (action: UsersPageActionType) => void) => {
+const MapDispatchToProps = (dispatch: (action: ActionType) => void) => {
     return {
-        follow: (userID: string) => { dispatch(followAC(userID)) },
-        unfollow: (userID: string) => { dispatch(unfollowAC(userID)) },
-        setUsers: (users: UserType[]) => { dispatch(setUsersAC(users)) }
+        follow: (userID: number) => { (dispatch(followAC(userID))) },
+        unfollow: (userID: number) => { (dispatch(unfollowAC(userID))) },
+        setUsers: (users: UsersForUserPageType[]) => { (dispatch(setUsersAc(users))) }
     }
 }
 export const UsersContainer = connect(MapStateToProps, MapDispatchToProps)(Users)

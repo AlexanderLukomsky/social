@@ -1,18 +1,9 @@
 type PostsType = { id: string, message: string, likesCount: number }
 type DialogsType = { id: string, name: string, img: string }
 type MessagesType = { id: string, message: string }
-type AddressUserType = { country: string, city: string }
-export type UserType = {
-    id: string;
-    name: string;
-    followed: boolean;
-    status: string;
-    photoUrl: string;
-    address: AddressUserType
-}
-export type UsersPageType = {
-    users: UserType[]
-}
+
+
+
 export type ProfilePageType = {
     posts: PostsType[]
     newPostText: string
@@ -27,4 +18,19 @@ export type StateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogsPageType
     sidebar: SidebarType[]
+    usersPage: UsersPageType
+}
+
+export type UsersForUserPageType = {
+    followed: boolean
+    id: number
+    name: string
+    photos: { small: null, large: null }
+    status: null
+    uniqueUrlName: null
+}
+export type UsersPageType = {
+    users: UsersForUserPageType[]
+    totalCount: number,
+    error: null
 }
