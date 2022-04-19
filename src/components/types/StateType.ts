@@ -31,6 +31,8 @@ export type UsersForUserPageType = {
 }
 export type UsersPageType = {
     users: UsersForUserPageType[]
-    totalCount: number,
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
     error: null
 }
