@@ -2,13 +2,10 @@ import { connect } from "react-redux";
 import { ActionType, AppStateType } from "../../redux/redux-store";
 import { changeCurrentPageAC, followAC, setTotalCountAC, setUsersAc, unfollowAC } from "../../redux/user-reducer";
 import { UsersForUserPageType } from "../types/StateType";
-import { Users } from "./Users";
+import { UsersAPIComponent } from "./UsersAPIComponent";
 const MapStateToProps = (state: AppStateType) => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage
+        usersPage: state.usersPage,
     }
 }
 const MapDispatchToProps = (dispatch: (action: ActionType) => void) => {
@@ -20,4 +17,4 @@ const MapDispatchToProps = (dispatch: (action: ActionType) => void) => {
         setTotalCount: (totalCount: number) => { dispatch(setTotalCountAC(totalCount)) }
     }
 }
-export const UsersContainer = connect(MapStateToProps, MapDispatchToProps)(Users)
+export const UsersContainer = connect(MapStateToProps, MapDispatchToProps)(UsersAPIComponent)
