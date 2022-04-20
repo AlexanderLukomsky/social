@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import usersDefaultPhoto from '../../assets/usersImg.jpg';
 import { UsersForUserPageType } from '../types/StateType';
 type UsersPropsType = {
@@ -35,7 +36,7 @@ export const Users = (props: UsersPropsType) => {
             {props.users.map(u =>
                 <div key={u.id}>
                     <div>
-                        <img src={u.photos.small ? u.photos.small : usersDefaultPhoto} alt="description" />
+                        <NavLink to={`propfile/${u.id}`}><img src={u.photos.small ? u.photos.small : usersDefaultPhoto} alt="description" /></NavLink>
                     </div>
                     {u.name}
                     {

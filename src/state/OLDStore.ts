@@ -1,3 +1,4 @@
+import { ProfileType } from './../components/types/StateType';
 import { v1 } from 'uuid';
 import { DialogsActionType, dialogsReducer } from '../redux/dialogs-reducer';
 import { ProfileActionType, profileReducer } from '../redux/profile-reducer';
@@ -7,6 +8,7 @@ type DialogsType = { id: string, name: string, img: string }
 type MessagesType = { id: string, message: string }
 type SidebarType = { id: string, name: string }
 type ProfilePageType = {
+    profile: ProfileType | null
     posts: PostsType[]
     newPostText: string
 }
@@ -34,6 +36,7 @@ const store: StoreType = {
     _callSubscriber() { },
     _state: {
         profilePage: {
+            profile: null,
             posts: [
                 { id: v1(), message: 'message-1', likesCount: 5 },
                 { id: v1(), message: 'message-2', likesCount: 8 },

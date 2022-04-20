@@ -6,15 +6,17 @@ const initialState: UsersPageType = {
     pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
+    isFetching: false,
     error: null
 }
-type SetUsersACType = ReturnType<typeof setUsersAc>
+type SetUsersACType = ReturnType<typeof setUsersAC>
 type FollowACType = ReturnType<typeof followAC>
 type UnfollowACType = ReturnType<typeof unfollowAC>
 type ChangeCurrentPageACType = ReturnType<typeof changeCurrentPageAC>
 type SetTotalCountACType = ReturnType<typeof setTotalCountAC>
+type ToggleIsFetchingACType = ReturnType<typeof toggleIsFetchingAC>
 
-export type UsersPageActionType = SetUsersACType | FollowACType | UnfollowACType | ChangeCurrentPageACType | SetTotalCountACType
+export type UsersPageActionType = SetUsersACType | FollowACType | UnfollowACType | ChangeCurrentPageACType | SetTotalCountACType | ToggleIsFetchingACType
 
 export const usersReducer = (state: UsersPageType = initialState, action: UsersPageActionType) => {
     switch (action.type) {
@@ -23,6 +25,7 @@ export const usersReducer = (state: UsersPageType = initialState, action: UsersP
         case 'SET-USERS': return { ...state, users: [...action.payload.users] }
         case 'CHANGE-CURRENT-PAGE': return { ...state, currentPage: action.payload.currentPage }
         case 'SET-TOTAL-COUNT': return { ...state, totalUsersCount: action.totalCount }
+        case 'TOGGLE-IS-FETCHING': return { ...state, isFetching: action.payload.isFetching }
         default: return state
     }
 }
@@ -31,7 +34,7 @@ export const usersReducer = (state: UsersPageType = initialState, action: UsersP
 
 
 //*
-export const setUsersAc = (users: UsersForUserPageType[]) => {
+export const setUsersAC = (users: UsersForUserPageType[]) => {
     return {
         type: 'SET-USERS',
         payload: { users }
@@ -59,5 +62,11 @@ export const setTotalCountAC = (totalCount: number) => {
     return {
         type: 'SET-TOTAL-COUNT',
         totalCount
+    } as const
+}
+export const toggleIsFetchingAC = (isFetching: boolean) => {
+    return {
+        type: 'TOGGLE-IS-FETCHING',
+        payload: { isFetching }
     } as const
 }

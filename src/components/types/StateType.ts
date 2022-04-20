@@ -1,10 +1,11 @@
-type PostsType = { id: string, message: string, likesCount: number }
+export type PostsType = { id: string, message: string, likesCount: number }
 type DialogsType = { id: string, name: string, img: string }
 type MessagesType = { id: string, message: string }
 
 
 
 export type ProfilePageType = {
+    profile: ProfileType | null
     posts: PostsType[]
     newPostText: string
 }
@@ -34,5 +35,28 @@ export type UsersPageType = {
     pageSize: number
     totalUsersCount: number
     currentPage: number
+    isFetching: boolean
     error: null
+}
+
+export type ProfileType = {
+    aboutMe: string
+    contacts: {
+        facebook: string
+        website: null,
+        vk: string
+        twitter: string
+        instagram: string
+        youtube: null,
+        github: string
+        mainLink: null
+    },
+    lookingForAJob: true,
+    lookingForAJobDescription: string
+    fullName: string
+    userId: number,
+    photos: {
+        small: string
+        large: string
+    }
 }
