@@ -11,6 +11,8 @@ type UsersPropsType = {
     changeCurrentPage: (currentPage: number) => void
     unfollow: (id: number) => void
     follow: (id: number) => void
+    followingInProgress: number[]
+    togleFollowingProgress: (userID: number, isFollow: boolean) => void
 }
 export const Users = (props: UsersPropsType) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
@@ -20,21 +22,26 @@ export const Users = (props: UsersPropsType) => {
     }
 
     const unfollow = (userID: number) => {
+        props.togleFollowingProgress(userID, true)
         usersAPI.unFollow(userID)
             .then(data => {
                 if (data.resultCode === 0) {
                     props.unfollow(userID)
                 }
+                props.togleFollowingProgress(userID, false)
             })
     }
     const follow = (userID: number) => {
+        props.togleFollowingProgress(userID, true)
         usersAPI.follow(userID)
             .then(data => {
                 if (data.resultCode === 0) {
                     props.follow(userID)
                 }
+                props.togleFollowingProgress(userID, false)
             })
     }
+
     return (
         <div className="users">
             <ul className="users__list_pages">
@@ -58,7 +65,9 @@ export const Users = (props: UsersPropsType) => {
                     </div>
                     {u.name}
                     {
-                        u.followed ? <button onClick={() => unfollow(u.id)}>Unfollow</button> : <button onClick={() => follow(u.id)}>Follow</button>
+                        u.followed ?
+                            <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => unfollow(u.id)}>Unfollow</button> :
+                            <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => follow(u.id)}>Follow</button>
                     }
 
                 </div>)}

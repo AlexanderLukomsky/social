@@ -12,6 +12,7 @@ type UsersPropsType = {
     setCurrentPage: (page: number) => void
     setTotalCount: (totalCount: number) => void
     toggleIsFetching: (isFetching: boolean) => void
+    togleFollowingProgress: (userID: number, progress: boolean) => void
 }
 export class UsersAPIComponent extends React.Component<UsersPropsType> {
 
@@ -36,9 +37,10 @@ export class UsersAPIComponent extends React.Component<UsersPropsType> {
     }
     render() {
         return <>
-            <button onClick={() => this.props.toggleIsFetching(!this.props.usersPage.isFetching)}>+</button>
             {this.props.usersPage.isFetching ? <Preloader /> :
                 <Users
+                    {...this.props.usersPage}
+                    togleFollowingProgress={this.props.togleFollowingProgress}
                     totalUsersCount={this.props.usersPage.totalUsersCount}
                     pageSize={this.props.usersPage.pageSize}
                     currentPage={this.props.usersPage.currentPage}
@@ -46,7 +48,6 @@ export class UsersAPIComponent extends React.Component<UsersPropsType> {
                     changeCurrentPage={this.changeCurrentPage}
                     unfollow={this.props.unfollow}
                     follow={this.props.follow}
-
                 />}
         </>
     }
