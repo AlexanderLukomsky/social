@@ -1,5 +1,5 @@
-import axios from "axios";
 import React from "react";
+import { usersAPI } from "../../API/api";
 import { Preloader } from "../common/Preloader";
 
 import { UsersForUserPageType, UsersPageType } from "../types/StateType";
@@ -13,33 +13,25 @@ type UsersPropsType = {
     setTotalCount: (totalCount: number) => void
     toggleIsFetching: (isFetching: boolean) => void
 }
-export const instance = axios.create({
-    withCredentials: true,
-    baseURL: 'https://social-network.samuraijs.com/api/1.0/',
-    // headers:     {
-    //     "API-KEY": "ваш-ключ"
-    // }
-});
 export class UsersAPIComponent extends React.Component<UsersPropsType> {
 
     componentDidMount() {
         this.props.toggleIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.usersPage.currentPage}&count=${this.props.usersPage.pageSize}`)
-            .then(response => {
+        usersAPI.getUsers(this.props.usersPage.currentPage, this.props.usersPage.pageSize)
+            .then(data => {
                 this.props.toggleIsFetching(false)
-                this.props.setUsers(response.data.items)
-                this.props.setTotalCount(response.data.totalCount)
+                this.props.setUsers(data.items)
+                this.props.setTotalCount(data.totalCount)
             })
-        console.log('Users did mount');
         document.title = 'Users'
     }
     changeCurrentPage = (page: number) => {
         this.props.toggleIsFetching(true)
         this.props.setCurrentPage(page)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.usersPage.pageSize}`)
-            .then(response => {
+        usersAPI.getUsers(page, this.props.usersPage.pageSize)
+            .then(data => {
                 this.props.toggleIsFetching(false)
-                this.props.setUsers(response.data.items)
+                this.props.setUsers(data.items)
             })
     }
     render() {

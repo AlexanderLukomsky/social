@@ -1,6 +1,4 @@
-type SettingsType = {
 
-}
 export const Settings = () => {
     return (
         <div>

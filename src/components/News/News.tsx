@@ -1,6 +1,4 @@
-type NewsType = {
 
-}
 export const News = () => {
     return (
         <div>
