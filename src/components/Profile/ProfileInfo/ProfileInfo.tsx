@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom"
 import { Preloader } from "../../common/Preloader"
 import { ProfileType } from "../../types/StateType"
 

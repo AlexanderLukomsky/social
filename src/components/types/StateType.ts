@@ -61,3 +61,12 @@ export type ProfileType = {
         large: string
     }
 }
+export type AuthDataType = {
+    id: number;
+    login: string;
+    email: string;
+}
+export type AuthStateType = {
+    data: AuthDataType
+    isAuth: boolean
+}

@@ -1,6 +1,8 @@
+import { ActionType } from './redux-store';
 import { ProfileType } from './../components/types/StateType';
 import { v1 } from 'uuid';
 import { ProfilePageType } from '../components/types/StateType';
+import { usersAPI } from '../API/api';
 type AddPostACType = ReturnType<typeof addPostAC>
 type ChangePostTextACType = ReturnType<typeof changePostTextAC>
 type SetUserProfileACType = ReturnType<typeof setUserProfileAC>
@@ -16,7 +18,6 @@ const profilePage: ProfilePageType = {
     ],
     newPostText: '',
 }
-
 export const profileReducer = (state: ProfilePageType = profilePage, action: ProfileActionType) => {
     switch (action.type) {
         case 'ADD-POST':
@@ -33,6 +34,7 @@ export const addPostAC = () => {
     } as const
 }
 
+
 export const changePostTextAC = (value: string) => {
     return {
         type: 'CHANGE-POST-TEXT',
@@ -44,4 +46,8 @@ export const setUserProfileAC = (profile: ProfileType) => {
         type: 'SET-USER-PROFILE',
         profile
     } as const
+}
+export const setUserProfileThunkCreator = (userId: string | undefined) => (dispatch: (action: ProfileActionType) => void) => {
+    usersAPI.getUserProfile(userId)
+        .then(data => dispatch(setUserProfileAC(data)))
 }

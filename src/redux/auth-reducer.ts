@@ -1,30 +1,36 @@
-type SetUserDataACType = ReturnType<typeof setUserDataAC>
-type AuthActionType = SetUserDataACType
+import { usersAPI } from "../API/api"
+import { AuthDataType, AuthStateType } from "../components/types/StateType"
 
-export type AuthStateType = {
+type SetUserDataACType = ReturnType<typeof setAuthUserDataAC>
+export type AuthActionType = SetUserDataACType
+
+const initialState = {
     data: {
-        id: number,
-        login: string
-        email: string
-        messages: [],
-        fieldsErrors: [],
-        resultCode: number
-    }
-
-}
-
-const initialState = {} as AuthStateType
-
-export const authReducer = (state: AuthStateType = initialState, action: AuthActionType) => {
+    },
+    isAuth: false
+} as AuthStateType
+export const authReducer = (state: AuthStateType = initialState, action: AuthActionType): AuthStateType => {
     switch (action.type) {
-        case 'SET_USER_DATA': return { ...state, ...action.data }
+        case 'SET_USER_DATA': ; return {
+            ...state, data: { ...action.data }, isAuth: true
+        }
         default: return state
     }
 }
 
-export const setUserDataAC = (data: AuthStateType) => {
+export const setAuthUserDataAC = (data: AuthDataType) => {
     return {
         type: 'SET_USER_DATA',
         data
     } as const
+}
+export const authThunkCreator = () => (dispatch: (action: AuthActionType) => void) => {
+    usersAPI.auth()
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(setAuthUserDataAC(data.data))
+            }
+        })
+
+
 }

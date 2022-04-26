@@ -1,10 +1,7 @@
-
-import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { Location, NavigateFunction, Params, useLocation, useNavigate, useParams } from "react-router-dom";
-import { usersAPI } from "../../API/api";
-import { setUserProfileAC } from "../../redux/profile-reducer";
+import { setUserProfileThunkCreator } from "../../redux/profile-reducer";
 import { AppStateType } from "../../redux/redux-store";
 import { ProfileType } from "../types/StateType";
 import { Profile } from "./Profile";
@@ -12,7 +9,7 @@ type MapStatePropsType = {
     profile: ProfileType
 }
 type MapDispatchPropsType = {
-    setUserProfile: (profile: ProfileType) => void
+    setUserProfileThunkCreator: (userId: string | undefined) => void
 }
 type RouterType = {
     router: {
@@ -27,8 +24,7 @@ export class ProfileContainer extends React.Component<ProfileContainerPropsType 
 
     componentDidMount = () => {
         const userId = this.props.router.params.userId
-        usersAPI.getUserProfile(userId)
-            .then(data => this.props.setUserProfile(data))
+        this.props.setUserProfileThunkCreator(userId)
     }
     render() {
         return (
@@ -48,6 +44,7 @@ const MapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 type WithRouterParamType = typeof ProfileContainer
+
 function withRouter(Component: WithRouterParamType) {
     function ComponentWithRouterProp(props: ProfileContainerPropsType) {
         let location = useLocation();
@@ -66,4 +63,4 @@ function withRouter(Component: WithRouterParamType) {
 
 
 
-export default connect(MapStateToProps, { setUserProfile: setUserProfileAC })(withRouter(ProfileContainer))
+export default connect(MapStateToProps, { setUserProfileThunkCreator: setUserProfileThunkCreator })(withRouter(ProfileContainer))

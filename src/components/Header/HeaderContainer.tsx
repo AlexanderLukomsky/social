@@ -1,24 +1,22 @@
-
-import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { usersAPI } from "../../API/api";
-import { AuthStateType, setUserDataAC } from "../../redux/auth-reducer";
+import { authThunkCreator } from "../../redux/auth-reducer";
 import { AppStateType } from "../../redux/redux-store";
+import { AuthStateType } from "../types/StateType";
 import { Header } from "./Header";
 
 type MapStatePropsType = {
     state: AuthStateType
 }
 type MapDispatchPropsType = {
-    setUserData: (data: AuthStateType) => void
+    authThunkCreator: () => void
 }
 type AuthPropsType = MapStatePropsType & MapDispatchPropsType
 export class HeaderContainer extends React.Component<AuthPropsType> {
 
     componentDidMount() {
-        usersAPI.auth()
-            .then(data => this.props.setUserData(data))
+
+        this.props.authThunkCreator()
     }
 
     render() {
@@ -35,4 +33,4 @@ const MapStateToProps = (state: AppStateType): MapStatePropsType => {
 }
 
 
-export default connect(MapStateToProps, { setUserData: setUserDataAC })(HeaderContainer)
+export default connect(MapStateToProps, { authThunkCreator: authThunkCreator })(HeaderContainer)

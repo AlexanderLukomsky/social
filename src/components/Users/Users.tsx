@@ -1,6 +1,4 @@
-import axios from 'axios';
 import { NavLink } from 'react-router-dom';
-import { usersAPI } from '../../API/api';
 import usersDefaultPhoto from '../../assets/usersImg.jpg';
 import { UsersForUserPageType } from '../types/StateType';
 type UsersPropsType = {
@@ -9,10 +7,9 @@ type UsersPropsType = {
     currentPage: number
     users: UsersForUserPageType[]
     changeCurrentPage: (currentPage: number) => void
-    unfollow: (id: number) => void
-    follow: (id: number) => void
+    unfollowThunkCreator: (id: number) => void
+    followThunkCreator: (id: number) => void
     followingInProgress: number[]
-    togleFollowingProgress: (userID: number, isFollow: boolean) => void
 }
 export const Users = (props: UsersPropsType) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
@@ -22,24 +19,10 @@ export const Users = (props: UsersPropsType) => {
     }
 
     const unfollow = (userID: number) => {
-        props.togleFollowingProgress(userID, true)
-        usersAPI.unFollow(userID)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    props.unfollow(userID)
-                }
-                props.togleFollowingProgress(userID, false)
-            })
+        props.unfollowThunkCreator(userID)
     }
     const follow = (userID: number) => {
-        props.togleFollowingProgress(userID, true)
-        usersAPI.follow(userID)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    props.follow(userID)
-                }
-                props.togleFollowingProgress(userID, false)
-            })
+        props.followThunkCreator(userID)
     }
 
     return (

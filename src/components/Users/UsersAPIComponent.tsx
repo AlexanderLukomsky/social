@@ -1,53 +1,34 @@
 import React from "react";
-import { usersAPI } from "../../API/api";
 import { Preloader } from "../common/Preloader";
-
-import { UsersForUserPageType, UsersPageType } from "../types/StateType";
+import { UsersPageType } from "../types/StateType";
 import { Users } from "./Users";
 type UsersPropsType = {
     usersPage: UsersPageType
-    follow: (userID: number) => void
-    unfollow: (usersID: number) => void
-    setUsers: (users: UsersForUserPageType[]) => void
-    setCurrentPage: (page: number) => void
-    setTotalCount: (totalCount: number) => void
-    toggleIsFetching: (isFetching: boolean) => void
-    togleFollowingProgress: (userID: number, progress: boolean) => void
+    getUsersThunkCreator: (currentPage: number, pageSize: number) => void
+    followThunkCreator: (userID: number) => void
+    unfollowThunkCreator: (userID: number) => void
 }
 export class UsersAPIComponent extends React.Component<UsersPropsType> {
 
     componentDidMount() {
-        this.props.toggleIsFetching(true)
-        usersAPI.getUsers(this.props.usersPage.currentPage, this.props.usersPage.pageSize)
-            .then(data => {
-                this.props.toggleIsFetching(false)
-                this.props.setUsers(data.items)
-                this.props.setTotalCount(data.totalCount)
-            })
+        this.props.getUsersThunkCreator(this.props.usersPage.currentPage, this.props.usersPage.pageSize)
         document.title = 'Users'
     }
     changeCurrentPage = (page: number) => {
-        this.props.toggleIsFetching(true)
-        this.props.setCurrentPage(page)
-        usersAPI.getUsers(page, this.props.usersPage.pageSize)
-            .then(data => {
-                this.props.toggleIsFetching(false)
-                this.props.setUsers(data.items)
-            })
+        this.props.getUsersThunkCreator(page, this.props.usersPage.pageSize)
     }
     render() {
         return <>
             {this.props.usersPage.isFetching ? <Preloader /> :
                 <Users
                     {...this.props.usersPage}
-                    togleFollowingProgress={this.props.togleFollowingProgress}
                     totalUsersCount={this.props.usersPage.totalUsersCount}
                     pageSize={this.props.usersPage.pageSize}
                     currentPage={this.props.usersPage.currentPage}
                     users={this.props.usersPage.users}
                     changeCurrentPage={this.changeCurrentPage}
-                    unfollow={this.props.unfollow}
-                    follow={this.props.follow}
+                    unfollowThunkCreator={this.props.unfollowThunkCreator}
+                    followThunkCreator={this.props.followThunkCreator}
                 />}
         </>
     }

@@ -1,3 +1,4 @@
+import { usersAPI } from "../API/api"
 import { UsersForUserPageType, UsersPageType } from "../components/types/StateType"
 const initialState: UsersPageType = {
     users: [
@@ -80,4 +81,36 @@ export const toggleFollowingProgressAC = (userID: number, isFetching: boolean) =
         type: 'TOGGLE-IS-FOLLOW-PROGRESS',
         payload: { userID, isFetching }
     } as const
+}
+
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => (dispatch: (action: UsersPageActionType) => void) => {
+    dispatch(toggleIsFetchingAC(true))
+    usersAPI.getUsers(currentPage, pageSize)
+        .then(data => {
+            dispatch(toggleIsFetchingAC(false))
+            dispatch(setUsersAC(data.items))
+            dispatch(setTotalCountAC(data.totalCount))
+            dispatch(changeCurrentPageAC(currentPage))
+        })
+}
+export const followThunkCreator = (userID: number) => (dispatch: (action: UsersPageActionType) => void) => {
+    dispatch(toggleFollowingProgressAC(userID, true))
+    usersAPI.follow(userID)
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(followAC(userID))
+            }
+            dispatch(toggleFollowingProgressAC(userID, false))
+        })
+}
+export const unfollowThunkCreator = (userID: number) => (dispatch: (action: UsersPageActionType) => void) => {
+    dispatch(toggleFollowingProgressAC(userID, true))
+    usersAPI.unFollow(userID)
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(unfollowAC(userID))
+            }
+            dispatch(toggleFollowingProgressAC(userID, false))
+        })
 }

@@ -5,11 +5,9 @@ import { ProfileInfo } from './ProfileInfo/ProfileInfo'
 type ProfilePropsType = {
     profile: ProfileType
 }
-
 export const Profile = (props: ProfilePropsType) => {
     return (
         <div className='profile'>
-
             <ProfileInfo profile={props.profile} />
             <UserPostsContainer />
         </div>
