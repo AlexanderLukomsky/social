@@ -1,10 +1,8 @@
-import { useEffect } from "react"
-import { Navigate, Route } from "react-router-dom"
 import { DialogsPageType } from "../types/StateType"
 import { DialogItem } from "./DialogItem/DialogItem"
 import { DialogMessage } from "./DialogMessage/DialogMessage"
 import { DialogsAddMessage } from "./DialogsAddMessage/DialogsAddMessage"
-type DialogsPropsType = {
+export type DialogsPropsType = {
     dialogsPage: DialogsPageType
     addNewMessage: () => void
     onChangeMessage: (value: string) => void
@@ -13,7 +11,6 @@ type DialogsPropsType = {
 
 export const Dialogs = ({ dialogsPage, addNewMessage, onChangeMessage, ...props }: DialogsPropsType) => {
 
-    if (!props.isAuth) return <Navigate replace to="/login" />
     return (
         <div className='dialogs'>
             <div className='dialogs__columns'>

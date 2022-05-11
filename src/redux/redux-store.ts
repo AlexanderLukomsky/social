@@ -6,14 +6,14 @@ import { DialogsActionType, dialogsReducer } from './dialogs-reducer';
 import { UsersPageActionType, usersReducer } from './user-reducer';
 import { AuthActionType, authReducer } from './auth-reducer';
 import thunk from 'redux-thunk';
-
-
+import { profileStatusReducer } from './profileStatus-reducer';
 const rootReducer = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     usersPage: usersReducer,
     sidebar: sidebarReducer,
-    auth: authReducer
+    auth: authReducer,
+    profilestatus: profileStatusReducer,
 })
 export type AppStateType = ReturnType<typeof rootReducer>
 

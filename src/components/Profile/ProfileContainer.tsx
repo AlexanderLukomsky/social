@@ -1,17 +1,23 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Location, NavigateFunction, Params, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Location, Navigate, NavigateFunction, Params, useLocation, useNavigate, useParams } from "react-router-dom";
+import { compose } from "redux";
 import { setUserProfileThunkCreator } from "../../redux/profile-reducer";
+import { getProfileStatusThunk, ProfileStatusType, updateProfileStatusThunk } from "../../redux/profileStatus-reducer";
 import { AppStateType } from "../../redux/redux-store";
 import { ProfileType } from "../types/StateType";
 import { Profile } from "./Profile";
 type MapStatePropsType = {
     profile: ProfileType
+    isAuth: boolean
+    profileStatus: ProfileStatusType
 }
 type MapDispatchPropsType = {
+    getProfileStatusThunk: (userId: string) => void
     setUserProfileThunkCreator: (userId: string | undefined) => void
+    updateProfileStatusThunk: (status: string) => void
 }
-type RouterType = {
+export type RouterType = {
     router: {
         location: Location;
         navigate: NavigateFunction;
@@ -25,22 +31,25 @@ export class ProfileContainer extends React.Component<ProfileContainerPropsType 
     componentDidMount = () => {
         const userId = this.props.router.params.userId
         this.props.setUserProfileThunkCreator(userId)
+        this.props.getProfileStatusThunk(userId ? userId : '19615')
+
     }
     render() {
         return (
-            <div>
-                <Profile
-                    {...this.props}
-                    profile={this.props.profile}
-                />
-            </div>
+            <Profile
+                {...this.props}
+                profile={this.props.profile}
+            />
+
         )
     }
 }
 
-const MapStateToProps = (state: AppStateType): MapStatePropsType => {
+const MapStateToProps = (state: AppStateType) => {
     return {
+        profileStatus: state.profilestatus,
         profile: state.profilePage.profile as ProfileType,
+        isAuth: state.auth.isAuth
     }
 }
 type WithRouterParamType = typeof ProfileContainer
@@ -63,4 +72,11 @@ function withRouter(Component: WithRouterParamType) {
 
 
 
-export default connect(MapStateToProps, { setUserProfileThunkCreator: setUserProfileThunkCreator })(withRouter(ProfileContainer))
+export default compose(
+    connect(MapStateToProps, {
+        getProfileStatusThunk: getProfileStatusThunk,
+        setUserProfileThunkCreator: setUserProfileThunkCreator,
+        updateProfileStatusThunk: updateProfileStatusThunk
+    }),
+    withRouter
+)(ProfileContainer)

@@ -9,6 +9,7 @@ type PostsPropsType = {
     profilePage: ProfilePageType
     changeNewPostTextValue: (value: string) => void
     addNewPost: () => void
+    isAuth: boolean
 }
 export const UserPosts = ({ profilePage, addNewPost, changeNewPostTextValue, ...props }: PostsPropsType) => {
     const onClickHandler = () => {
@@ -20,13 +21,13 @@ export const UserPosts = ({ profilePage, addNewPost, changeNewPostTextValue, ...
     }
     return (
         <div className={s.posts}>
-            <div>
+            {props.isAuth && <div>
                 <textarea
                     onChange={onChangeHandler}
                     value={profilePage.newPostText}
                 />
                 <Button title='add post' callback={onClickHandler} />
-            </div>
+            </div>}
             <ul>
                 {profilePage.posts.map(el => <li key={el.id} id={el.id}>
                     <PostItem message={el.message} />

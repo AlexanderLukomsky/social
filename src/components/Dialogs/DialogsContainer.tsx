@@ -1,7 +1,9 @@
 import { connect } from "react-redux"
+import { Navigate } from "react-router-dom"
+import { compose } from "redux"
 import { addMessageAC, changeNewMessageTextAC } from "../../redux/dialogs-reducer"
 import { ActionType, AppStateType } from "../../redux/redux-store"
-import { Dialogs } from "./Dialogs"
+import { Dialogs, DialogsPropsType } from "./Dialogs"
 
 const MapStateToProps = (state: AppStateType) => {
     return {
@@ -19,6 +21,21 @@ const MapDispatchToProps = (dispatch: (action: ActionType) => void) => {
         }
     }
 }
+function withRouter(Component: typeof Dialogs) {
+    function ComponentWithRouterProp(props: DialogsPropsType) {
+        if (!props.isAuth) return <Navigate replace to="/login" />
+        return (
+            <Component
+                {...props}
+            />
+        );
+    }
+    return ComponentWithRouterProp;
+}
 
 
-export const DialogsContainer = connect(MapStateToProps, MapDispatchToProps)(Dialogs)
+
+export default compose(
+    connect(MapStateToProps, MapDispatchToProps),
+    withRouter
+)(Dialogs)
