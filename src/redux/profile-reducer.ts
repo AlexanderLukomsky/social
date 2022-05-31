@@ -4,9 +4,8 @@ import { v1 } from 'uuid';
 import { ProfilePageType } from '../components/types/StateType';
 import { usersAPI } from '../API/api';
 type AddPostACType = ReturnType<typeof addPostAC>
-type ChangePostTextACType = ReturnType<typeof changePostTextAC>
 type SetUserProfileACType = ReturnType<typeof setUserProfileAC>
-export type ProfileActionType = AddPostACType | ChangePostTextACType | SetUserProfileACType
+export type ProfileActionType = AddPostACType | SetUserProfileACType
 const profilePage: ProfilePageType = {
     profile: null,
     posts: [
@@ -16,29 +15,19 @@ const profilePage: ProfilePageType = {
         { id: v1(), message: 'message-4', likesCount: 14 },
         { id: v1(), message: 'message-5', likesCount: 17 },
     ],
-    newPostText: '',
 }
 export const profileReducer = (state: ProfilePageType = profilePage, action: ProfileActionType) => {
     switch (action.type) {
         case 'ADD-POST':
-            return { ...state, posts: [{ id: v1(), message: state.newPostText, likesCount: 1 }, ...state.posts], newPostText: '' }
-        case 'CHANGE-POST-TEXT':
-            return { ...state, newPostText: action.payload.value }
+            return { ...state, posts: [{ id: v1(), message: action.payload.newPostText, likesCount: 1 }, ...state.posts] }
         case 'SET-USER-PROFILE': return { ...state, profile: action.profile }
         default: return state
     }
 }
-export const addPostAC = () => {
+export const addPostAC = (newPostText: string) => {
     return {
-        type: 'ADD-POST'
-    } as const
-}
-
-
-export const changePostTextAC = (value: string) => {
-    return {
-        type: 'CHANGE-POST-TEXT',
-        payload: { value }
+        type: 'ADD-POST',
+        payload: { newPostText }
     } as const
 }
 export const setUserProfileAC = (profile: ProfileType) => {

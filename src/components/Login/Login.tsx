@@ -1,21 +1,31 @@
-import axios from "axios";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { authAPI } from "../../API/api";
+import { authThunkCreator } from "../../redux/auth-reducer";
 import { LoginForm } from "./LoginForm"
 
 export const LoginPage = () => {
-    const instance = axios.create({
-        withCredentials: true,
-        baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-        headers: {
-            "API-KEY": "1b228bfc-8734-47cb-b840-f8cc669c3e6c"
-        }
-    })
-    const auth = (formData: { login: string, password: string, rememberMe: boolean }) => {
-
+    const [authMe, setAuthMe] = useState(false)
+    const [error, setError] = useState('')
+    const dispatch = useDispatch()
+    const auth = (formData: { login: string, password: string }) => {
+        authAPI.login(formData.login, formData.password)
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(authThunkCreator())
+                    setAuthMe(true)
+                }
+                else {
+                    setError(response.data.messages)
+                }
+            })
     }
     return (
-        <div>
-            <h1>Login</h1>
-            <LoginForm onSubmit={auth} />
-        </div>
+        authMe ? <Navigate replace to="/profile" /> :
+            <div>
+                <h1>Login</h1>
+                <LoginForm onSubmit={auth} error={error} />
+            </div>
     )
 }

@@ -1,8 +1,6 @@
 import { ProfileAPI } from '../API/api';
-import { ProfileStatus } from './../components/Profile/ProfileStatus/ProfileStatus';
-type EditModeProfileStatusACType = ReturnType<typeof editModeProfileStatusAC>
 type SetProfileStatusACType = ReturnType<typeof setProfileStatusAC>
-type ProfileStatusActionType = EditModeProfileStatusACType | SetProfileStatusACType
+type ProfileStatusActionType = SetProfileStatusACType
 export type ProfileStatusType = typeof initialState
 const initialState = {
     editMode: false,
@@ -10,18 +8,11 @@ const initialState = {
 }
 export const profileStatusReducer = (state: ProfileStatusType = initialState, action: ProfileStatusActionType): ProfileStatusType => {
     switch (action.type) {
-        case 'EDIT-MODE': return { ...state, editMode: action.editMode }
         case 'SET-STATUS': return { ...state, status: action.status }
         default: return state
     }
 }
 
-export const editModeProfileStatusAC = (editMode: boolean) => {
-    return {
-        type: 'EDIT-MODE',
-        editMode
-    } as const
-}
 export const setProfileStatusAC = (status: string) => {
     return {
         type: 'SET-STATUS',

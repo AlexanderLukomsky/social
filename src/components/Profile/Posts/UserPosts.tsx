@@ -1,33 +1,20 @@
-import React from "react"
-import { ChangeEvent } from "react"
 import { ProfilePageType } from "../../types/StateType"
-import { Button } from "../Button/Button"
+import { AddPostForm } from "./AddPostForm"
 import { PostItem } from "./Post/PostItem"
 import s from './Posts.module.scss'
 
 type PostsPropsType = {
     profilePage: ProfilePageType
-    changeNewPostTextValue: (value: string) => void
-    addNewPost: () => void
+    addNewPost: (newPostText: string) => void
     isAuth: boolean
 }
-export const UserPosts = ({ profilePage, addNewPost, changeNewPostTextValue, ...props }: PostsPropsType) => {
-    const onClickHandler = () => {
-        addNewPost()
-    }
-    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        const newValue = e.currentTarget.value
-        changeNewPostTextValue(newValue)
+export const UserPosts = ({ profilePage, ...props }: PostsPropsType) => {
+    const addPost = (newPost: { addNewPost: string }) => {
+        props.addNewPost(newPost.addNewPost)
     }
     return (
         <div className={s.posts}>
-            {props.isAuth && <div>
-                <textarea
-                    onChange={onChangeHandler}
-                    value={profilePage.newPostText}
-                />
-                <Button title='add post' callback={onClickHandler} />
-            </div>}
+            {props.isAuth && <AddPostForm onSubmit={addPost} />}
             <ul>
                 {profilePage.posts.map(el => <li key={el.id} id={el.id}>
                     <PostItem message={el.message} />

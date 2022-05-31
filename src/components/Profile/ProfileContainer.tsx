@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Location, Navigate, NavigateFunction, Params, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Location, NavigateFunction, Params, useLocation, useNavigate, useParams } from "react-router-dom";
 import { compose } from "redux";
 import { setUserProfileThunkCreator } from "../../redux/profile-reducer";
 import { getProfileStatusThunk, ProfileStatusType, updateProfileStatusThunk } from "../../redux/profileStatus-reducer";

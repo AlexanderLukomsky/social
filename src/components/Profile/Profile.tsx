@@ -11,6 +11,7 @@ export const Profile = (props: ProfilePropsType) => {
         <div className='profile'>
             <ProfileInfo profile={props.profile} updateStatus={props.updateProfileStatusThunk} />
             <UserPostsContainer />
+
         </div>
     )
 }

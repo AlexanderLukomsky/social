@@ -1,36 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
-import { authThunkCreator } from "../../redux/auth-reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutThunk } from "../../redux/auth-reducer";
 import { AppStateType } from "../../redux/redux-store";
 import { AuthStateType } from "../types/StateType";
 import { Header } from "./Header";
-
-type MapStatePropsType = {
-    state: AuthStateType
-}
-type MapDispatchPropsType = {
-    authThunkCreator: () => void
-}
-type AuthPropsType = MapStatePropsType & MapDispatchPropsType
-export class HeaderContainer extends React.Component<AuthPropsType> {
-
-    componentDidMount() {
-
-        this.props.authThunkCreator()
+export const HeaderContainer = () => {
+    const state = useSelector<AppStateType, AuthStateType>(state => state.auth)
+    const dispatch = useDispatch()
+    const logout = () => {
+        dispatch(logoutThunk())
     }
-
-    render() {
-        return (
-            <Header {...this.props.state} />
-        )
-    }
-
+    return (
+        <Header state={state} logout={logout} />
+    )
 }
-const MapStateToProps = (state: AppStateType): MapStatePropsType => {
-    return {
-        state: state.auth
-    }
-}
-
-
-export default connect(MapStateToProps, { authThunkCreator: authThunkCreator })(HeaderContainer)

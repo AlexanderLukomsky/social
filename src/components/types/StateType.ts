@@ -7,12 +7,10 @@ type MessagesType = { id: string, message: string }
 export type ProfilePageType = {
     profile: ProfileType | null
     posts: PostsType[]
-    newPostText: string
 }
 export type DialogsPageType = {
     dialogs: DialogsType[]
     messages: MessagesType[]
-    newMessage: string
 }
 type SidebarType = { id: string, name: string }
 export type StateType = {

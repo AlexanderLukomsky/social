@@ -1,8 +1,9 @@
-import { usersAPI } from "../API/api"
+import { authAPI, usersAPI } from "../API/api"
 import { AuthDataType, AuthStateType } from "../components/types/StateType"
 
 type SetUserDataACType = ReturnType<typeof setAuthUserDataAC>
-export type AuthActionType = SetUserDataACType
+type LogoutAC = ReturnType<typeof logoutAC>
+export type AuthActionType = SetUserDataACType | LogoutAC
 
 const initialState = {
     data: {
@@ -10,9 +11,13 @@ const initialState = {
     isAuth: false
 } as AuthStateType
 export const authReducer = (state: AuthStateType = initialState, action: AuthActionType): AuthStateType => {
+    console.log(state.isAuth);
     switch (action.type) {
-        case 'SET_USER_DATA': ; return {
+        case 'SET_USER_DATA': return {
             ...state, data: { ...action.data }, isAuth: true
+        }
+        case 'LOGOUT': return {
+            ...state, isAuth: false
         }
         default: return state
     }
@@ -24,13 +29,22 @@ export const setAuthUserDataAC = (data: AuthDataType) => {
         data
     } as const
 }
+export const logoutAC = () => {
+    return {
+        type: 'LOGOUT',
+    } as const
+}
 export const authThunkCreator = () => (dispatch: (action: AuthActionType) => void) => {
-    usersAPI.auth()
+    authAPI.me()
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(setAuthUserDataAC(data.data))
             }
         })
-
-
+}
+export const logoutThunk = () => (dispatch: (action: AuthActionType) => void) => {
+    authAPI.logout()
+        .then(() => {
+            dispatch(logoutAC())
+        })
 }

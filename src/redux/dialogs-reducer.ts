@@ -1,8 +1,7 @@
 import { v1 } from "uuid";
 import { DialogsPageType } from "../components/types/StateType";
 type AddMessageACType = ReturnType<typeof addMessageAC>
-type ChangeNewMessageTextACType = ReturnType<typeof changeNewMessageTextAC>
-export type DialogsActionType = AddMessageACType | ChangeNewMessageTextACType
+export type DialogsActionType = AddMessageACType
 const dialogsPage: DialogsPageType = {
     dialogs: [
         { id: v1(), name: 'Alex', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRngVwb85JwgOn247xcWn16PWH9_vF6vbn4rA&usqp=CAU' },
@@ -16,25 +15,18 @@ const dialogsPage: DialogsPageType = {
         { id: v1(), message: 'Message 3' },
         { id: v1(), message: 'Message 4' },
     ],
-    newMessage: ''
 }
 export const dialogsReducer = (state: DialogsPageType = dialogsPage, action: DialogsActionType) => {
     switch (action.type) {
         case 'ADD-MESSAGE':
-            return { ...state, messages: [{ id: v1(), message: state.newMessage }, ...state.messages], newMessage: '' }
-        case 'CHANGE-NEW-MESSAGE-TEXT':
-            return { ...state, newMessage: action.payload.message }
+            return { ...state, messages: [{ id: v1(), message: action.payload.message }, ...state.messages] }
         default: return state
     }
 }
-export const addMessageAC = () => {
+
+export const addMessageAC = (message: string) => {
     return {
-        type: 'ADD-MESSAGE'
-    } as const
-}
-export const changeNewMessageTextAC = (message: string) => {
-    return {
-        type: 'CHANGE-NEW-MESSAGE-TEXT',
+        type: 'ADD-MESSAGE',
         payload: { message }
     } as const
 }

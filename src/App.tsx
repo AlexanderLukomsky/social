@@ -8,10 +8,17 @@ import { Settings } from './components/Settings/Settings';
 
 import { UsersContainer } from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
-import HeaderContainer from './components/Header/HeaderContainer';
 import { LoginPage } from './components/Login/Login';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
+import { useEffect } from 'react';
+import { authThunkCreator } from './redux/auth-reducer';
+import { useDispatch } from 'react-redux';
+import { HeaderContainer } from './components/Header/HeaderContainer';
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(authThunkCreator())
+  }, [])
   return (
     <div className="App">
       <div className='app-wrapper'>

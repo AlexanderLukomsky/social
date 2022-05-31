@@ -1,8 +1,11 @@
-import { connect } from "react-redux"
+import { useEffect, useState } from "react"
+import { connect, useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { compose } from "redux"
-import { addMessageAC, changeNewMessageTextAC } from "../../redux/dialogs-reducer"
+import { authAPI } from "../../API/api"
+import { addMessageAC } from "../../redux/dialogs-reducer"
 import { ActionType, AppStateType } from "../../redux/redux-store"
+import { AuthStateType, DialogsPageType } from "../types/StateType"
 import { Dialogs, DialogsPropsType } from "./Dialogs"
 
 const MapStateToProps = (state: AppStateType) => {
@@ -13,17 +16,17 @@ const MapStateToProps = (state: AppStateType) => {
 }
 const MapDispatchToProps = (dispatch: (action: ActionType) => void) => {
     return {
-        addNewMessage: () => {
-            dispatch(addMessageAC())
+        addNewMessage: (newMessage: string) => {
+            console.log(newMessage);
+            dispatch(addMessageAC(newMessage))
         },
-        onChangeMessage: (value: string) => {
-            dispatch(changeNewMessageTextAC(value))
-        }
     }
 }
 function withRouter(Component: typeof Dialogs) {
     function ComponentWithRouterProp(props: DialogsPropsType) {
-        if (!props.isAuth) return <Navigate replace to="/login" />
+        const state = useSelector<AppStateType, AuthStateType>(state => state.auth)
+
+        //  if (!auth) return <Navigate replace to="/login" />
         return (
             <Component
                 {...props}

@@ -1,16 +1,17 @@
 import { DialogsPageType } from "../types/StateType"
+import { AddMessageForm } from "./AddMessageForm"
 import { DialogItem } from "./DialogItem/DialogItem"
 import { DialogMessage } from "./DialogMessage/DialogMessage"
-import { DialogsAddMessage } from "./DialogsAddMessage/DialogsAddMessage"
 export type DialogsPropsType = {
     dialogsPage: DialogsPageType
-    addNewMessage: () => void
-    onChangeMessage: (value: string) => void
+    addNewMessage: (newMessage: string) => void
     isAuth: boolean
 }
 
-export const Dialogs = ({ dialogsPage, addNewMessage, onChangeMessage, ...props }: DialogsPropsType) => {
-
+export const Dialogs = ({ dialogsPage, ...props }: DialogsPropsType) => {
+    const addMessage = (newMessageObj: { newMessageBody: string }) => {
+        props.addNewMessage(newMessageObj.newMessageBody)
+    }
     return (
         <div className='dialogs'>
             <div className='dialogs__columns'>
@@ -25,7 +26,9 @@ export const Dialogs = ({ dialogsPage, addNewMessage, onChangeMessage, ...props 
                     </li>)}
                 </ul>
             </div>
-            <DialogsAddMessage value={dialogsPage.newMessage} onChangeMessage={onChangeMessage} addNewMessage={addNewMessage} />
+            <AddMessageForm
+                onSubmit={addMessage}
+            />
         </div >
     )
 
